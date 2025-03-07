@@ -51,6 +51,7 @@
         "csignal": "cpp",
         "thread": "cpp",
         "chrono": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "unordered_set": "cpp"
     }
 }
