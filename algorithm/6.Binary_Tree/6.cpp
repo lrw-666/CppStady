@@ -18,7 +18,7 @@ struct TreeNode {
     TreeNode *right;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
-// 递归法
+// 递归法：后序遍历
 class Solution {
 public:
     int getDepth(TreeNode* node) {
@@ -57,6 +57,47 @@ public:
             }
         }
         return depth;
+    }
+};
+
+//递归法:前序遍历
+class Solution3 {
+public:
+    int result;
+    int getDepth(TreeNode* node, int depth) {
+        result = depth > result ? depth : result; // 中
+        if (node->left == NULL && node->right == NULL) return depth;
+        if (node->left) { // 左
+            depth++; // 深度+1
+            getDepth(node->left, depth);
+            depth--; // 回溯，深度-1
+        }
+        if (node->right) { // 右
+            depth++; // 深度+1
+            getDepth(node->right, depth);
+            depth--; // 回溯，深度-1
+        }
+        return ;
+    }
+
+    // 精简
+    int getDepth2(TreeNode* node, int depth) {
+        result = depth > result ? depth : result; // 中
+        if (node->left == NULL && node->right == NULL) return ;
+        if (node->left) { // 左
+            getDepth2(node->left, depth + 1);
+        }
+        if (node->right) { // 右
+            getDepth2(node->right, depth + 1);
+        }
+        return ;
+    }
+
+    int maxDepth(TreeNode* root) {
+        result = 0;
+        if (root == 0) return result;
+        getDepth(root, 1);
+        return result;
     }
 };
 
