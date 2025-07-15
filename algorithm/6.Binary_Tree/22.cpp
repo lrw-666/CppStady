@@ -13,6 +13,7 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+// 递归法
 class Solution {
 public:
     TreeNode* deleteNode(TreeNode* root, int key) {
@@ -44,3 +45,43 @@ public:
         return root;
     }
 };
+
+class Solution2 {
+private:
+    // 将目标节点(被删除的节点)的左子树放到目标节点的右子树的最左面节点的左孩子的位置
+    // 并返回目标节点右孩子为新的根节点
+    TreeNode* deleteNodeOperation(TreeNode* target) {
+        if (target == nullptr) return target;
+        if (target->right == nullptr) return target->left;
+        TreeNode* cur = target->right;
+        while (cur->left) {
+            cur = cur->left;
+        }
+        cur->left = target->left;
+        return target->right;
+    }
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if (root == nullptr) return root;
+        TreeNode* cur = root;
+        TreeNode* pre = nullptr; // 记录cur的父节点，用来删除cur
+        while (cur) {
+            if (cur->val == key) break;
+            pre = cur;
+            if (cur->val > key) cur = cur->left;
+            else cur = cur->right;
+        }
+        if (pre == nullptr) { // 如果搜索树只有头节点
+            root = deleteNodeOperation(cur);
+        }
+        // pre用于判断删除左孩子还是右孩子
+        if (pre->left && pre->left->val == key) {
+            pre->left = deleteNodeOperation(cur);
+        }
+        if (pre->right && pre->right->val == key) {
+            pre->right = deleteNodeOperation(cur);
+        }
+        return root;
+    }
+};
+
